@@ -1,13 +1,16 @@
 import { UserRegistered } from "../../User/domain/UserRegistered";
 import { EventStore } from "../application/EventStore";
 import { DomainEvent } from "../domain/DomainEvent";
+import { EventEntity } from "./EventEntity";
+import { TypeOrmClient } from "./TypeOrmClient";
 
-export class PrismaEventStore implements EventStore {
+export class TypeOrmEventStore implements EventStore {
   async append(event: DomainEvent) {
-    // add event to db (event_id, event_body, type_name, ocurred_on), serialized in json
-    // (min 25 DDD: Domain Events and Bounded Context Integration - Carlos Buenosvinos)
-    //
-    // await prisma.events.create({data: ... })
+    await TypeOrmClient.manager.insert(EventEntity, {
+      body: event,
+      ocurred_on: event.ocurredOn(),
+      name: event
+    });
   }
 
   async allStoredEventsSince(eventId: string) {

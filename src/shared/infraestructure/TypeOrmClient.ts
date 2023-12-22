@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import { UserEntity } from "../../User/infraestructure/persistence/UserEntity";
+import { EventEntity } from "./EventEntity";
 
 export const TypeOrmClient = new DataSource({
   type: "postgres",
@@ -11,7 +12,7 @@ export const TypeOrmClient = new DataSource({
   extra: {
     ssl: "true",
   },
-  entities: [UserEntity],
+  entities: [UserEntity, EventEntity],
   synchronize: true,
   logging: true,
 });

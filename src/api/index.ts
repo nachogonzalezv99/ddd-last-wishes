@@ -11,7 +11,7 @@ import httpStatus from "http-status";
 import Router from "express-promise-router";
 import { DomainEventPublisher } from "../shared/domain/DomainEventPublisher";
 import { PersistDomainEventSubscriber } from "../shared/domain/PersistDomainEventSubscriber";
-import { PrismaEventStore } from "../shared/infraestructure/PrismaEventStore";
+import { TypeOrmEventStore } from "../shared/infraestructure/TypeOrmEventStore";
 const app = express();
 
 TypeOrmClient.initialize()
@@ -22,7 +22,7 @@ app.use(json());
 app.use(urlencoded({ extended: true }));
 
 DomainEventPublisher.getInstance().subscribe(
-  new PersistDomainEventSubscriber(new PrismaEventStore())
+  new PersistDomainEventSubscriber(new TypeOrmEventStore())
 );
 
 app.use("/auth", authRouter);
